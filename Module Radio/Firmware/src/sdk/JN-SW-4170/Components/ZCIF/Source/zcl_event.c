@@ -573,11 +573,17 @@ PRIVATE void vZCL_HandleDataIndication(ZPS_tsAfEvent *pZPSevent)
     u16inputOffset = u16ZCL_ReadCommandHeader(pZPSevent->uEvent.sApsDataIndEvent.hAPduInst,
                                               &sZCL_HeaderParams);
 
+       vLog_Printf(TRACE_DEBUG,LOG_DEBUG,"--vZCL_HandleDataIndication\n");
+
+       vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " DstEndpoint : %d\n", pZPSevent->uEvent.sApsDataIndEvent.u8DstEndpoint);
+       vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " u16ClusterId : %04x\n",pZPSevent->uEvent.sApsDataIndEvent.u16ClusterId);
+       vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " bDirection : %d\n",!sZCL_HeaderParams.bDirection);
+       vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " u8TransactionSequenceNumber : %d\n",!sZCL_HeaderParams.u8TransactionSequenceNumber);
 
     /* lpsw 2721 - Error return codes for unsupported manufacturer specific commands
      */
-    vLog_Printf(TRACE_DEBUG,LOG_DEBUG,"\n--avant eZCL_SearchForEPentryAndCheckManufacturerId\n");
-    vLog_Printf(TRACE_DEBUG,LOG_DEBUG,"\n-- sZCL_HeaderParams : \n bManufacturerSpecific : %d\nu16ManufacturerCode : %d \n",sZCL_HeaderParams.bManufacturerSpecific,sZCL_HeaderParams.u16ManufacturerCode);
+ //   vLog_Printf(TRACE_DEBUG,LOG_DEBUG,"\n--avant eZCL_SearchForEPentryAndCheckManufacturerId\n");
+  //  vLog_Printf(TRACE_DEBUG,LOG_DEBUG,"\n-- sZCL_HeaderParams : \n bManufacturerSpecific : %d\nu16ManufacturerCode : %d \n",sZCL_HeaderParams.bManufacturerSpecific,sZCL_HeaderParams.u16ManufacturerCode);
     if (eZCL_SearchForEPentryAndCheckManufacturerId(pZPSevent->uEvent.sApsDataIndEvent.u8DstEndpoint, sZCL_HeaderParams.bManufacturerSpecific, sZCL_HeaderParams.u16ManufacturerCode, &psZCL_EndPointDefinition) != E_ZCL_SUCCESS)
     {
 
@@ -659,10 +665,11 @@ PRIVATE void vZCL_HandleDataIndication(ZPS_tsAfEvent *pZPSevent)
         PDUM_eAPduFreeAPduInstance(pZPSevent->uEvent.sApsDataIndEvent.hAPduInst);
         return;
     }
-    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "\n informations : \n");
+    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "\n vZCL_HandleDataIndication informations : \n");
     vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " DstEndpoint : %d\n", pZPSevent->uEvent.sApsDataIndEvent.u8DstEndpoint);
-    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " u16ClusterId : %d\n",pZPSevent->uEvent.sApsDataIndEvent.u16ClusterId);
+    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " u16ClusterId : %04x\n",pZPSevent->uEvent.sApsDataIndEvent.u16ClusterId);
     vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " bDirection : %d\n",!sZCL_HeaderParams.bDirection);
+    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " u8TransactionSequenceNumber : %d\n",!sZCL_HeaderParams.u8TransactionSequenceNumber);
 
     // check the command is suitable for the endpoint - cluster, manufac Id, direction
     eCallbackReturn = eZCL_SearchForClusterEntry(pZPSevent->uEvent.sApsDataIndEvent.u8DstEndpoint,
@@ -688,7 +695,7 @@ PRIVATE void vZCL_HandleDataIndication(ZPS_tsAfEvent *pZPSevent)
     // Check the command was sent with sufficient security - assume it was if no cluster to check against
     // http://trac/Mars/ticket/60 ZCL response when cluster does not exist (Secure Electrans at Trac Sept 2010)
     eClusterSecurityLevel = E_ZCL_SECURITY_NETWORK;
-    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "\n psClusterInstance: %d\n",psClusterInstance);
+    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " psClusterInstance: %d\n",psClusterInstance);
     if (psClusterInstance)
     {
         eClusterSecurityLevel = (psClusterInstance->psClusterDefinition->u8ClusterControlFlags & SEND_SECURITY_MASK);
@@ -796,11 +803,13 @@ PRIVATE void vZCL_HandleDataIndication(ZPS_tsAfEvent *pZPSevent)
     }
 
     // Is command cluster specicfic or general
-    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "\n sZCL_HeaderParams.eFrameType : %d\n",sZCL_HeaderParams.eFrameType);
+    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "vZCL_HandleDataIndication sZCL_HeaderParams.eFrameType : %d\n",sZCL_HeaderParams.eFrameType);
     switch (sZCL_HeaderParams.eFrameType)
     {
     case eFRAME_TYPE_COMMAND_ACTS_ACCROSS_ENTIRE_PROFILE:
         {
+            vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " vZCL_HandleDataIndication sZCL_HeaderParams.u8CommandIdentifier : %d\n",sZCL_HeaderParams.u8CommandIdentifier);
+
             if (sZCL_HeaderParams.u8CommandIdentifier == E_ZCL_DEFAULT_RESPONSE)
             {
                 // fill in callback event
@@ -924,7 +933,7 @@ PRIVATE void vZCL_HandleDataIndication(ZPS_tsAfEvent *pZPSevent)
                 }
                 else
                 {
-                	//vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "\n vZCL_HandleEntireProfileCommand cmd : %d", sZCL_HeaderParams.u8CommandIdentifier);
+                    vLog_Printf(TRACE_DEBUG,LOG_DEBUG, "vZCL_HandleEntireProfileCommand cmd : %d\n", sZCL_HeaderParams.u8CommandIdentifier);
 
                     // Moved to zcl_library_options.h as some commands are optional so
                     // the command handler is built at the same time as the app and unused
@@ -965,6 +974,7 @@ PRIVATE void vZCL_HandleDataIndication(ZPS_tsAfEvent *pZPSevent)
             }
             else
             {
+				 vLog_Printf(TRACE_DEBUG,LOG_DEBUG, " eFRAME_TYPE_COMMAND_IS_SPECIFIC_TO_A_CLUSTER psZCL_EndPointDefinition:%d pZPSevent->eType:%d psClusterInstance->pCustomcallCallBackFunction:%d\n",psZCL_EndPointDefinition,pZPSevent->eType,psClusterInstance->pCustomcallCallBackFunction);
 
                 /* Input parameter checks & only interested in data indication events from here down */
                 if( (psZCL_EndPointDefinition==NULL) || \
