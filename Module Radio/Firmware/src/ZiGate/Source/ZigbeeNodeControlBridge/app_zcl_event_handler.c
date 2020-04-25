@@ -421,7 +421,8 @@ PRIVATE void APP_ZCL_cbEndpointCallback ( tsZCL_CallBackEvent*    psEvent )
             return;
         }
     }
-    
+    vLog_Printf (TRACE_ZCL, LOG_DEBUG, "APP_ZCL_cbEndpointCallback Received Event: %d\n",psEvent->eEventType);
+
     switch (psEvent->eEventType)
     {
         case E_ZCL_CBET_READ_REQUEST:
@@ -439,8 +440,10 @@ PRIVATE void APP_ZCL_cbEndpointCallback ( tsZCL_CallBackEvent*    psEvent )
         case E_ZCL_CBET_READ_ATTRIBUTES_RESPONSE:
         case E_ZCL_CBET_TIMER:
         case E_ZCL_CBET_ZIGBEE_EVENT:
-            //vLog_Printf(TRACE_ZCL, "EP EVT:No action\r\n");
-            break;
+        {
+            vLog_Printf(TRACE_ZCL, LOG_DEBUG, "EP EVT:not usually handled\r\n");
+        }
+        break;
 
         case E_ZCL_CBET_ERROR:
         {
