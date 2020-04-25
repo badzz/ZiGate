@@ -3123,6 +3123,8 @@ PRIVATE ZPS_teStatus APP_eBindUnbindEntry ( bool_t           bBind,
                                             uint8            u8DstAddrMode,
                                             uint8*           pu8Seq )
 {
+    vLog_Printf(TRACE_APP,LOG_DEBUG, "APP_eBindUnbindEntry bBind:%d   \n", bBind);
+
     ZPS_teStatus                 eReturnCode =  ZPS_APL_APS_E_INVALID_PARAMETER;
     ZPS_tuAddress                uAddr;
     ZPS_tsAplZdpBindUnbindReq    sAplZdpBindReq;
@@ -3150,6 +3152,8 @@ PRIVATE ZPS_teStatus APP_eBindUnbindEntry ( bool_t           bBind,
     {
         if( u8DstAddrMode == 0x1 )
         {
+        	vLog_Printf(TRACE_APP,LOG_DEBUG, "call ZPS_eAplZdoBindGroup   \n" );
+
             if(bBind)
             {
                 ZPS_eAplZdoBindGroup ( u16ClusterId,
@@ -3167,6 +3171,7 @@ PRIVATE ZPS_teStatus APP_eBindUnbindEntry ( bool_t           bBind,
         {
             if(bBind)
             {
+            	vLog_Printf(TRACE_APP,LOG_DEBUG, "call ZPS_eAplZdoBind   \n" );
                 eReturnCode = ZPS_eAplZdoBind ( u16ClusterId,
                                                 u8SrcEndpoint,
                                                 puDstAddress->u16Addr,
@@ -3198,7 +3203,7 @@ PRIVATE ZPS_teStatus APP_eBindUnbindEntry ( bool_t           bBind,
             sAplZdpBindReq.u8SrcEndpoint =  u8SrcEndpoint;
             sAplZdpBindReq.u16ClusterId  =  u16ClusterId;
             sAplZdpBindReq.u8DstAddrMode =  u8DstAddrMode;
-
+            vLog_Printf(TRACE_APP,LOG_DEBUG, "call ZPS_eAplZdpBindUnbindRequest   \n" );
             eReturnCode = ZPS_eAplZdpBindUnbindRequest( hAPduInst,
                                                         uDstAddr,
                                                         TRUE,

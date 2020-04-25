@@ -102,11 +102,11 @@
 #endif
 
 #ifndef UART_DEBUGGING
-#define UART_DEBUGGING                                            FALSE
+#define UART_DEBUGGING                                            TRUE
 #endif
 
 #ifndef TRACE_APPSTART
-#define TRACE_APPSTART                                            FALSE
+#define TRACE_APPSTART                                            TRUE
 #endif
 
 #ifndef TRACE_MIGRATION
@@ -118,7 +118,7 @@
 #endif
 
 #ifndef TRACE_EXC
-#define TRACE_EXC                                                 FALSE
+#define TRACE_EXC                                                 TRUE
 #endif
 
 #if (JENNIC_CHIP_FAMILY == JN516x)
@@ -1048,7 +1048,7 @@ PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
  * void
  *
  ****************************************************************************/
-/*PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
+PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
                                         PDM_eSystemEventCode    eSystemEventCode )
 {
 	DBG_vPrintf(TRACE_APPSTART, "Erreur Memoire : %d\n", eSystemEventCode);
@@ -1093,7 +1093,7 @@ PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
                 vLog_Printf ( TRACE_EXC,LOG_DEBUG,  "PDM: Unexpected call back Code %d Number %d\n", eSystemEventCode, u32EventNumber);
             break;
     }
-}*/
+}
 #endif
 #endif
 

@@ -58,6 +58,8 @@
 #include "zps_apl.h"
 #include "zps_apl_af.h"
 #include "dbg.h"
+#include "Log.h"
+
 
 /****************************************************************************/
 /***        Macro Definitions                                             ***/
@@ -137,6 +139,7 @@ PUBLIC   void vZCL_HandleAttributesReadRequest(
     uint16                 u16LengthOuput =  0;
     uint8                  au8LinkTxBuffer[256];
 
+    vLog_Printf ( TRUE,LOG_CRIT, "vZCL_HandleAttributesReadRequest called\r\n" );
 
     // parameter checks - clusters and EP's have been sanity checked at the event level
     // We don't null check the cluster id because we may want to generate a read att response for a null
@@ -173,6 +176,7 @@ PUBLIC   void vZCL_HandleAttributesReadRequest(
     // payload investigation
     u16payloadSize = PDUM_u16APduInstanceGetPayloadSize(pZPSevent->uEvent.sApsDataIndEvent.hAPduInst);
     // size sanity check
+    vLog_Printf ( TRUE,LOG_CRIT, "vZCL_HandleAttributesReadRequest 2\r\n" );
 
     if ((sZCL_HeaderParams.u16ManufacturerCode==0x15D2) && (sZCL_HeaderParams.bManufacturerSpecific==1) && (sZCL_HeaderParams.u8TransactionSequenceNumber==216))
     {
@@ -197,6 +201,7 @@ PUBLIC   void vZCL_HandleAttributesReadRequest(
 			return;
 		}
     }
+    vLog_Printf ( TRUE,LOG_CRIT, "vZCL_HandleAttributesReadRequest 3\r\n" );
 
     // number of attributes in request
     u8NumberAttributesInRequest = (u16payloadSize - u16inputOffset)/2;
