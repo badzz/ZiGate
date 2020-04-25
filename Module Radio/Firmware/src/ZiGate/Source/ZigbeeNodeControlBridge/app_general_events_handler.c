@@ -1356,6 +1356,14 @@ PRIVATE void APP_vWrite64Nbo( uint64    u64dWord,
 PUBLIC void Znc_vSendDataIndicationToHost ( ZPS_tsAfEvent*    psStackEvent,
                                             uint8*            pau8LinkTxBuffer )
 {
+    vLog_Printf ( TRACE_APP,LOG_DEBUG, "\n Znc_vSendDataIndicationToHost %d\n", psStackEvent->eType);
+
+    if (psStackEvent->eType != ZPS_EVENT_APS_DATA_INDICATION)
+    {
+        vLog_Printf ( TRACE_APP,LOG_DEBUG, "\n Znc_vSendDataIndicationToHost - wrong type of event\n");
+    	return;
+    }
+
     uint16    u16Length =  0;
     uint16    i         =  0;
     uint8*    dataPtr   =  ( uint8* ) PDUM_pvAPduInstanceGetPayload ( psStackEvent->uEvent.sApsDataIndEvent.hAPduInst );
