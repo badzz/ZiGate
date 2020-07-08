@@ -54,6 +54,7 @@
 #include "OTA.h"
 #include "OTA_private.h"
 #include "dbg.h"
+#include "Log.h"
 
 #ifndef OTA_NO_CERTIFICATE
 #include "eccapi.h"
@@ -917,10 +918,14 @@ PUBLIC  teZCL_Status eOtaSetEventTypeAndGiveCallBack(
  ****************************************************************************/
 PUBLIC  teZCL_Status eOtaRegisterTimeServer(void)
 {
+    vLog_Printf(1,LOG_DEBUG,"\n eOtaRegisterTimeServer\n");
 
     // add timer click function to ZCL
-    if(eZCL_TimerRegister(E_ZCL_TIMER_CLICK_MS, 0, vOtaTimerClickCallback)!= E_ZCL_SUCCESS)
+    teZCL_Status status = eZCL_TimerRegister(E_ZCL_TIMER_CLICK_MS, 0, vOtaTimerClickCallback);
+    if(status!= E_ZCL_SUCCESS)
     {
+        vLog_Printf(1,LOG_DEBUG,"\n eOtaRegisterTimeServer %d\n", status);
+
         return(E_ZCL_FAIL);
     }
     return(E_ZCL_SUCCESS);
