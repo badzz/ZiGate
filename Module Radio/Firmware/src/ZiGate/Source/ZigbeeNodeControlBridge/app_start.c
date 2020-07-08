@@ -110,7 +110,7 @@
 #endif
 
 #ifndef TRACE_MIGRATION
-#define TRACE_MIGRATION                                           FALSE
+#define TRACE_MIGRATION                                           TRUE
 #endif
 
 #ifndef VERSION

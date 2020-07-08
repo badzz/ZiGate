@@ -192,6 +192,8 @@ PUBLIC void APP_vHandleAppEvents ( void )
 #endif
         if( sAppEvent.eType == APP_E_EVENT_TRANSPORT_HA_KEY )
         {
+            vLog_Printf(TRACE_APP,LOG_DEBUG, "\n APP_E_EVENT_TRANSPORT_HA_KEY  u64TransportKeyAddress:%d\n", sAppEvent.uEvent.u64TransportKeyAddress );
+
             ZPS_tuAddress    uDstAddress;
 
             uDstAddress.u64Addr =  sAppEvent.uEvent.u64TransportKeyAddress;
@@ -1024,6 +1026,15 @@ PUBLIC void APP_vHandleStackEvents ( ZPS_tsAfEvent*    psStackEvent )
             {
                 if ( psStackEvent->eType ==  ZPS_EVENT_NWK_NEW_NODE_HAS_JOINED )
                 {
+                    ZPS_tsAplAib * currentAplAib;
+                    currentAplAib = ZPS_psAplAibGetAib();
+                    vLog_Printf (TRACE_APP,LOG_DEBUG,"ZPS_psAplAibGetAib : %016llx\n", currentAplAib->u64ApsTrustCenterAddress);
+                    uint64 addr = ZPS_u64AplZdoGetIeeeAddr();
+                    vLog_Printf (TRACE_APP,LOG_DEBUG,"addr : %016llx\n", addr);
+                    if (currentAplAib->u64ApsTrustCenterAddress != addr)
+                       currentAplAib->u64ApsTrustCenterAddress = addr;
+                    PDM_eSaveRecordData(PDM_ID_INTERNAL_AIB,                currentAplAib,                   sizeof ( *currentAplAib ));
+
                     //RAJOUT FRED
                      u16Length =  0;
                     ZNC_BUF_U16_UPD ( &au8LinkTxBuffer [0] ,  psStackEvent->uEvent.sNwkJoinIndicationEvent.u16NwkAddr,  u16Length );
@@ -1336,6 +1347,8 @@ PUBLIC void App_TransportKeyCallback ( void*   pvParam )
 
     sAppEvent.eType                         =  APP_E_EVENT_TRANSPORT_HA_KEY;
     sAppEvent.uEvent.u64TransportKeyAddress =  *( ( uint64* ) pvParam );
+    vLog_Printf ( TRACE_APP,LOG_DEBUG, "\n App_TransportKeyCallback u64TransportKeyAddress:%016llx\n", sAppEvent.uEvent.u64TransportKeyAddress);
+
     ZQ_bQueueSend ( &APP_msgAppEvents, &sAppEvent );
 
 }

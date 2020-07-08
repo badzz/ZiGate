@@ -3472,6 +3472,8 @@ PRIVATE void APP_vControlNodeStartNetwork(void)
  ****************************************************************************/
 PUBLIC void APP_vConfigureDevice ( uint8 u8DeviceType )
 {
+    vLog_Printf(TRACE_APP,LOG_DEBUG, "\nAPP_vConfigureDevice u8DeviceType:%d\n",u8DeviceType );
+
     if( u8DeviceType !=  0 )
     {
         ZPS_vAplSecSetInitialSecurityState(ZPS_ZDO_DISTRIBUTED_LINK_KEY,
@@ -3620,6 +3622,7 @@ PUBLIC bool APP_bSendHATransportKey ( uint16    u16ShortAddress,
     uint16          u16Location;
     AESSW_Block_u   uKey;
     bool_t          bCredPresent =  FALSE;
+    vLog_Printf(TRACE_APP,LOG_DEBUG, "\nAPP_bSendHATransportKey u16ShortAddress:%d u64DeviceAddress:%016llx u64ParentAddress:%016llx u8Status:%d bSetTclkFlashFeature:%d\n",u16ShortAddress, u64DeviceAddress,u64ParentAddress ,u8Status,bSetTclkFlashFeature );
 
     if( bBlackListEnable )
     {
@@ -3652,6 +3655,8 @@ PUBLIC bool APP_bSendHATransportKey ( uint16    u16ShortAddress,
     }
     else
     {
+        vLog_Printf(TRACE_APP,LOG_DEBUG, "\nAPP_bSendHATransportKey u8DeviceType:%d\n",sZllState.u8DeviceType );
+
         if(sZllState.u8DeviceType >= 2)
         {
            u64CallbackMacAddress =  u64DeviceAddress;
@@ -3679,6 +3684,7 @@ PUBLIC bool APP_bSendHATransportKey ( uint16    u16ShortAddress,
         ZPS_u8GrabMutexLock ( zps_vGetZpsMutex , &sZpsIntStore );
         bStatus = TRUE;
     }
+    vLog_Printf(TRACE_APP,LOG_DEBUG, "\n nAPP_bSendHATransportKey bStatus:%d\n",bStatus );
 
     return bStatus;
 }
