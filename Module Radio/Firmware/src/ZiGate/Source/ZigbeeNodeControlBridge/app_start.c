@@ -1018,7 +1018,7 @@ void vfExtendedStatusCallBack ( ZPS_teExtendedStatus    eExtendedStatus )
 }
 
 #if (defined PDM_EEPROM && DBG_ENABLE)
-PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
+/*PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
                                         PDM_eSystemEventCode    eSystemEventCode )
 {
 	 //RAJOUT FRED v3.1b
@@ -1032,7 +1032,7 @@ PRIVATE void vPdmEventHandlerCallback ( uint32                  u32EventNumber,
 			   0);
 
 
-}
+}*/
 #endif
 
 #if (defined PDM_EEPROM)

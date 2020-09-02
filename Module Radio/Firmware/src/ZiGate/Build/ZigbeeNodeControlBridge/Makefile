@@ -392,7 +392,7 @@ $(GENERATED_FILE_NAME).bin: $(GENERATED_FILE_NAME).elf
     
 endif    
 
-	$(SDK_BASE_DIR)/Tools/Memsize/memsize.exe $(APP_BLD_DIR)/$(GENERATED_FILE_NAME).elf $(APP_BLD_DIR)/$(GENERATED_FILE_NAME)_NOLTO.map $(TARGET).json
+#	$(SDK_BASE_DIR)/Tools/Memsize/memsize.exe $(APP_BLD_DIR)/$(GENERATED_FILE_NAME).elf $(APP_BLD_DIR)/$(GENERATED_FILE_NAME)_NOLTO.map $(TARGET).json
 
 ################################################################################
 
