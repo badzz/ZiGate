@@ -184,6 +184,9 @@ PUBLIC teZCL_Status eZCL_SendDefaultResponse(
     u16offset +=  u16ZCL_APduInstanceWriteNBO(myPDUM_thAPduInstance, u16offset, E_ZCL_UINT8, &eZCLcommandStatus);
 
     // build address structure
+    if (pZPSevent->uEvent.sApsDataIndEvent.u8SrcAddrMode == E_ZCL_AM_SHORT)
+    	pZPSevent->uEvent.sApsDataIndEvent.u8SrcAddrMode = E_ZCL_AM_SHORT_NO_ACK;
+
     eZCL_BuildTransmitAddressStructure(pZPSevent, &sZCL_Address);
 
 
