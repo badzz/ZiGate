@@ -61,9 +61,9 @@ PDM_BUILD_TYPE         ?= _EEPROM
 BAUD                   ?= 1000000
 
 GP_SUPPORT             ?= 0
-TRACE                  ?= 0
+TRACE                  ?= 1
 
-DEBUG                  ?= NONE
+DEBUG                  ?= SL
 ###############################################################################
 # un-comment the lines below for Debugger
 # Debug options - define DEBUG to enable
@@ -129,6 +129,29 @@ CFLAGS += -DDEBUG_APP_GP
 CFLAGS += -DTRACE_GP_DEBUG
 
 endif
+
+ifeq ($(DEBUG), SL)
+CFLAGS  += -DDBG_ENABLE
+CLFAGS  += -DDEBUG_BDB
+$(info Building with debug UART1...)
+#CFLAGS  += -DDEBUG_APP_OTA
+CFLAGS += -DDEBUG_CLD_IASZONE
+CFLAGS  += -DEBUG_TL_NEGATIVE
+CFLAGS  += -DDEBUG_COMMISSION
+CFLAGS  += -DDEBUG_SCAN_REQ
+CFLAGS  += -DDEBUG_SCAN
+CFLAGS  += -DDEBUG_ZCL
+CFLAGS	+= -DDEBUG_NWK_RECOVERY
+#CFLAGS	+= -DDEBUG_PDM_EXTENDED
+CFLAGS	+= -DDEBUG_ZB_CONTROLBRIDGE_TASK
+CFLAGS  += -DTRACE_APP
+#CFLAGS += -DDEBUG_SERIAL_LINK
+CFLAGS += -DTRACE_ZBP_UTILS
+
+CFLAGS += -DDEBUG_APP_GP
+CFLAGS += -DTRACE_GP_DEBUG
+endif
+
 
 
 ifeq ($(NETWORK_RECOVERY), 1)
@@ -197,6 +220,7 @@ ifeq ($(JENNIC_CHIP_FAMILY),JN516x)
 APPSRC = irq_JN516x.S
 APPSRC += portasm_JN516x.S
 APPSRC += port_JN516x.c
+APPSRC += appZpsExtendedDebug.c
 endif
 ifeq ($(JENNIC_CHIP_FAMILY),JN517x)
 APPSRC = port_JN517x.c

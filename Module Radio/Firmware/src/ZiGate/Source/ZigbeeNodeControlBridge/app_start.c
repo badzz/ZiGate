@@ -345,6 +345,8 @@ PUBLIC void vAppMain(void)
 #else
     /* Send debug output through SerialLink to host */
     vSL_LogInit ( );
+    u8LogLevel = LOG_LEVEL;
+
 #endif
     DBG_vPrintf ( TRACE_APPSTART, "APP: Entering APP_vInitResources()\n" );
     APP_vInitResources ( );

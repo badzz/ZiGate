@@ -78,6 +78,7 @@
 #include "PDM_IDs.h"
 #include "ApplianceStatistics.h"
 #include "bdb_DeviceCommissioning.h"
+#include "appZpsExtendedDebug.h"
 
 //FRED IASWD
 #include "IASWD.h"
@@ -404,6 +405,30 @@ PUBLIC void APP_vProcessIncomingSerialCommands ( uint8    u8RxByte )
 
         switch ( u16PacketType )
         {
+			case (E_SL_MSG_SET_LOGMODE):
+			{
+				u8LogLevel     =   au8LinkRxBuffer [ 0 ];
+			#ifdef STACK_MEASURE
+
+				tsStackInfo    sStackInfo;
+
+				vGetStackMeasure( &sStackInfo );
+
+				DBG_vPrintf ( TRUE, "\r\n TotalSize: %lu, uPeakMeasure: %lu, Current: %lu ",
+														sStackInfo.u32TotalSize,
+														sStackInfo.u32PeakMeasure,
+														sStackInfo.u32CurrentMeasure );
+
+			#endif
+				vDisplayTableSizes();
+				vDisplayDiscNT();
+				vDisplayRouteRecordTable();
+				vDisplayNWKKey();
+				vDisplayNWKTransmitTable();
+				vDisplayBindingTable();
+			}
+			break;
+
             case (E_SL_MSG_SET_RAWMODE):
             {
                sZllState.u8RawMode     =   au8LinkRxBuffer [ 0 ];

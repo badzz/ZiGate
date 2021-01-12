@@ -74,7 +74,9 @@ extern "C" {
 
 
 /* Default log level */
-#define LOG_LEVEL   7
+#define LOG_LEVEL   0
+
+extern uint8 u8LogLevel;
 
 #define TRACE_DEBUG TRUE
 
@@ -87,7 +89,7 @@ extern "C" {
 /* When logging via Serial link to host syslog, send the log level as a char integer at the start of the message */
 #define QUOTE(A) #A
 #define CHAR(A) QUOTE(\x##A)
-#define vLog_Printf(STREAM, LEVEL, FORMAT, ARGS...)  DBG_vPrintf((STREAM && (LEVEL <= LOG_LEVEL)), CHAR(LEVEL) FORMAT, ##ARGS)
+#define vLog_Printf(STREAM, LEVEL, FORMAT, ARGS...)  DBG_vPrintf((STREAM && (LEVEL <= u8LogLevel)), CHAR(LEVEL) FORMAT, ##ARGS)
 
 #endif
 

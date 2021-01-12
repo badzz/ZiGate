@@ -127,7 +127,7 @@ PUBLIC void vDisplayTableSizes(void)
                                 );
 
 
-    DBG_vPrintf(TRACE_ZBP_UTILS, "NT:Size: %d: Record %d: %d: Total: %d ",
+    DBG_vPrintf(TRACE_ZBP_UTILS, "NT:Size: %d: Record %d Total: %d ",
                                 thisNib->sTblSize.u16NtActv,
                                 sizeof(ZPS_tsNwkActvNtEntry),
                                (thisNib->sTblSize.u16NtActv * sizeof(ZPS_tsNwkActvNtEntry))
@@ -135,14 +135,14 @@ PUBLIC void vDisplayTableSizes(void)
 
 
 
-    DBG_vPrintf(TRACE_ZBP_UTILS, "Routing Table:Size: %d: Record %d: %d: Total: %d ",
+    DBG_vPrintf(TRACE_ZBP_UTILS, "Routing Table:Size: %d: Record %d Total: %d ",
                                 thisNib->sTblSize.u16Rt,
                                 sizeof(ZPS_tsNwkRtEntry),
                                 (thisNib->sTblSize.u16Rt * sizeof(ZPS_tsNwkRtEntry))
                                 );
 
 
-    DBG_vPrintf(TRACE_ZBP_UTILS, "Route Record:Size: %d: Record %d: %d: Total: %d ",
+    DBG_vPrintf(TRACE_ZBP_UTILS, "Route Record:Size: %d: Record %d Total: %d ",
                                 thisNib->sTblSize.u16Rct,
                                 sizeof(ZPS_tsNwkRctEntry),
                                 (thisNib->sTblSize.u16Rct * sizeof(ZPS_tsNwkRctEntry))
@@ -174,7 +174,7 @@ PUBLIC void vDisplayAddressMapTable(void)
 
     for( i=0;i<thisNib->sTblSize.u16AddrMap;i++)
     {
-        DBG_vPrintf(TRACE_ZBP_UTILS,"\nShort Addr: %04x, Ext Addr: %016llx,", thisNib->sTbl.pu16AddrMapNwk[i], ZPS_u64NwkNibGetMappedIeeeAddr(ZPS_pvAplZdoGetNwkHandle(),thisNib->sTbl.psNtActv[i].u16Lookup));
+        DBG_vPrintf(TRACE_ZBP_UTILS,"\nShort Addr: %04x, Ext Addr: %016llx, \n", thisNib->sTbl.pu16AddrMapNwk[i], ZPS_u64NwkNibGetMappedIeeeAddr(ZPS_pvAplZdoGetNwkHandle(),thisNib->sTbl.psNtActv[i].u16Lookup));
     }
 }
 
@@ -201,7 +201,7 @@ PUBLIC void vDisplayNT( void )
 
     for( i = 0 ; i < thisNib->sTblSize.u16NtActv ; i++ )
     {
-        DBG_vPrintf(TRACE_ZBP_UTILS, "SAddr: 0x%04x - 0x%04x ExtAddr: 0x%016llx - LQI: %i - Failed TX's: %i - Auth: %i - %i %i %i %i %i %i - Active: %i - %i %i %i\n",
+        DBG_vPrintf(TRACE_ZBP_UTILS, "SAddr: 0x%04x - 0x%04x ExtAddr: 0x%016llx - LQI: %i - Failed TX's: %i - Auth: %i - %i %i %i %i %i %i - Active: %i - %i %i %i \n",
                     thisNib->sTbl.psNtActv[i].u16NwkAddr,
                     thisNib->sTbl.psNtActv[i].u16Lookup,
                     ZPS_u64NwkNibGetMappedIeeeAddr(ZPS_pvAplZdoGetNwkHandle(),thisNib->sTbl.psNtActv[i].u16Lookup),
@@ -273,7 +273,7 @@ PUBLIC void vDisplayAPSTable(void)
     uint8 j;
 
     ZPS_tsAplAib * tsAplAib;
-
+    DBG_vPrintf(TRACE_ZBP_UTILS, "vDisplayAPSTable" );
     tsAplAib = ZPS_psAplAibGetAib();
 
     for ( i = 0 ; i < (tsAplAib->psAplDeviceKeyPairTable->u16SizeOfKeyDescriptorTable + 1) ; i++ )
@@ -283,7 +283,7 @@ PUBLIC void vDisplayAPSTable(void)
 
         for(j=0; j<16;j++)
         {
-            DBG_vPrintf(TRACE_ZBP_UTILS, "%02x, ", tsAplAib->psAplDeviceKeyPairTable->psAplApsKeyDescriptorEntry[i].au8LinkKey[j]);
+            DBG_vPrintf(TRACE_ZBP_UTILS, "%02x,", tsAplAib->psAplDeviceKeyPairTable->psAplApsKeyDescriptorEntry[i].au8LinkKey[j]);
         }
         DBG_vPrintf(TRACE_ZBP_UTILS, "\r\n");
         DBG_vPrintf(TRACE_ZBP_UTILS, "Incoming FC: %d\n", tsAplAib->pu32IncomingFrameCounter[i]);
@@ -361,7 +361,7 @@ PUBLIC void vDisplayDiscNT(void)
     uint8 i;
 
     thisNib = ZPS_psNwkNibGetHandle(ZPS_pvAplZdoGetNwkHandle());
-
+    DBG_vPrintf(TRACE_ZBP_UTILS, "vDisplayDiscNT" );
     for( i = 0; i < thisNib->sTblSize.u8NtDisc; i++)
     {
         DBG_vPrintf(TRACE_ZBP_UTILS, "\nIndex: %d", i );
@@ -409,6 +409,7 @@ PUBLIC bool bInRoutingTable( uint16 u16ShortAddress )
 {
     ZPS_tsNwkNib * thisNib;
     thisNib = ZPS_psNwkNibGetHandle(ZPS_pvAplZdoGetNwkHandle());
+    DBG_vPrintf(TRACE_ZBP_UTILS, "bInRoutingTable" );
 
     uint8 i = 0;
 
@@ -416,7 +417,7 @@ PUBLIC bool bInRoutingTable( uint16 u16ShortAddress )
     {
         if(thisNib->sTbl.psRt[i].u16NwkDstAddr == u16ShortAddress )
         {
-            DBG_vPrintf(TRACE_ZBP_UTILS,"\nGot Short Address: %02x", thisNib->sTbl.psRt[i].u16NwkDstAddr);
+            DBG_vPrintf(TRACE_ZBP_UTILS,"\nGot Short Address: %02x \n", thisNib->sTbl.psRt[i].u16NwkDstAddr);
             return TRUE;
         }
     }
@@ -439,7 +440,7 @@ PUBLIC void vDisplayRoutingTable(void)
 {
     ZPS_tsNwkNib * thisNib;
     thisNib = ZPS_psNwkNibGetHandle(ZPS_pvAplZdoGetNwkHandle());
-
+    DBG_vPrintf(TRACE_ZBP_UTILS, "vDisplayRoutingTable" );
     uint8 i = 0;
 
     DBG_vPrintf(TRACE_ZBP_UTILS,"\r\nRouting Table Size %d\n", thisNib->sTblSize.u16Rt);
@@ -497,7 +498,7 @@ PUBLIC void vDisplayRouteRecordTable(void)
 {
     ZPS_tsNwkNib * thisNib;
     thisNib = ZPS_psNwkNibGetHandle(ZPS_pvAplZdoGetNwkHandle());
-
+    DBG_vPrintf(TRACE_ZBP_UTILS, "vDisplayRouteRecordTable" );
     uint8 i, j = 0;
 
     for( i=0;i<thisNib->sTblSize.u16Rct;i++)
@@ -558,7 +559,7 @@ void vDisplayNWKKey(void)
     uint8 j = 0;
 
     ZPS_tsNwkNib * thisNib;
-
+    DBG_vPrintf(TRACE_ZBP_UTILS,"vDisplayNWKKey");
     void * thisNet = ZPS_pvAplZdoGetNwkHandle();
     thisNib = ZPS_psNwkNibGetHandle(thisNet);
 
@@ -590,6 +591,7 @@ void vDisplayNWKKey(void)
  ****************************************************************************/
 PUBLIC void vDisplayNWKTransmitTable(void)
 {
+	DBG_vPrintf(TRACE_ZBP_UTILS,"vDisplayNWKTransmitTable \n");
     vDisplayNT();
     vDisplayRoutingTable();
     vDisplayAddressMapTable();
@@ -634,9 +636,9 @@ PUBLIC void vDisplayBindingTable( void )
         {
             
             u64Addr = ZPS_u64NwkNibGetMappedIeeeAddr( ZPS_pvAplZdoGetNwkHandle(), tsAplAib->psAplApsmeAibBindingTable->psAplApsmeBindingTable[0].pvAplApsmeBindingTableEntryForSpSrcAddr[j].u16AddrOrLkUp);
-            DBG_vPrintf(TRACE_ZBP_UTILS, "\r\nMAC addr 0x%x %x, ", (uint32)(u64Addr>>32), (uint32)(u64Addr&0xffffffff));
-            DBG_vPrintf(TRACE_ZBP_UTILS, " Dest EP %d, ", tsAplAib->psAplApsmeAibBindingTable->psAplApsmeBindingTable[0].pvAplApsmeBindingTableEntryForSpSrcAddr[j].u8DestinationEndPoint);
-            DBG_vPrintf(TRACE_ZBP_UTILS, "Cluster Id 0x%x ", tsAplAib->psAplApsmeAibBindingTable->psAplApsmeBindingTable[0].pvAplApsmeBindingTableEntryForSpSrcAddr[j].u16ClusterId);
+            DBG_vPrintf(TRACE_ZBP_UTILS, "\r\nMAC addr 0x%x %x,", (uint32)(u64Addr>>32), (uint32)(u64Addr&0xffffffff));
+            DBG_vPrintf(TRACE_ZBP_UTILS, " Dest EP %d,", tsAplAib->psAplApsmeAibBindingTable->psAplApsmeBindingTable[0].pvAplApsmeBindingTableEntryForSpSrcAddr[j].u8DestinationEndPoint);
+            DBG_vPrintf(TRACE_ZBP_UTILS, "Cluster Id 0x%x \n", tsAplAib->psAplApsmeAibBindingTable->psAplApsmeBindingTable[0].pvAplApsmeBindingTableEntryForSpSrcAddr[j].u16ClusterId);
         }
     }
     DBG_vPrintf(TRACE_ZBP_UTILS, "\r\n");
